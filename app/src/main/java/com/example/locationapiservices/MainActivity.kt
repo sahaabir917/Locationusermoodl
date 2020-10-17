@@ -2,10 +2,13 @@ package com.example.locationapiservices
 
 import android.Manifest
 import android.app.ActivityManager
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +21,11 @@ class MainActivity : AppCompatActivity() {
     private val REQUEST_CODE_lOCATION_PERMISSION = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        var nm =getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.M && !nm.isNotificationPolicyAccessGranted){
+            startActivity(Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS))
+        }
 
         var db = Room.databaseBuilder(
            applicationContext,
@@ -96,7 +104,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(applicationContext, locationservice::class.java)
             intent.action = Constant.ACTION_START_LOCATION_SERVICE
             startService(intent)
-            Toast.makeText(this, "location service started", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "location service started", Toast.LENGTH_LONG).show()
         }
     }
 

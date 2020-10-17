@@ -10,7 +10,8 @@ interface Usersetting_dao {
     @Insert
     fun saveUsersettings(usersettings: Usersettings)
 
-    @Query("select * from usersettings")
+    @Query("select * from Usersettings")
     fun selectall() : List<Usersettings>
+
 
 }
